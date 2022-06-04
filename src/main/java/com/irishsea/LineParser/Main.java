@@ -1,8 +1,10 @@
 package com.irishsea.LineParser;
 
 import com.irishsea.mergeSort.FileMerge;
+import com.irishsea.mergeSort.FileSplit;
 
 import java.io.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -82,16 +84,30 @@ public class Main {
 //            e.printStackTrace();
 //        }
 
-        /**
-         * проверка слияния двух остортированных файлов
-         */
 
         /**
          * проверка слияния 8 файликов в 4
          */
 
-        FileMerge.mergeAllFilesIntoOne();
+//        FileMerge.mergeAllFilesIntoOne();
 
+        /**
+         * проверка разбиения большого файла на маленькие по 400.000 строк в каждом
+         */
+
+        File sourceFile = new File("sourceLargeFile.txt");
+
+        //от 5 секунд до 15 в зависимости от загруженности диска
+        long start1 = System.currentTimeMillis();
+        int fileAmount = FileSplit.splitLargeFileIntoSmallFiles(sourceFile);
+        long end1 = System.currentTimeMillis();
+        System.out.println("1: " + (end1 - start1));
+
+        //от 11 секунд до 20 в зависимости от загруженности диска
+        long start2 = System.currentTimeMillis();
+        FileMerge.mergeAllFilesIntoOne(fileAmount);
+        long end2 = System.currentTimeMillis();
+        System.out.println("2: " + (end2 - start2));
 
     }
 }

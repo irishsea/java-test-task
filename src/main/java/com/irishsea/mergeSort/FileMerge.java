@@ -5,10 +5,12 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
 public class FileMerge {
-    public static void mergeAllFilesIntoOne() {
+    public static void mergeAllFilesIntoOne(int fileAmount) {
 
         int sortLevel = 0;
-        int remainingFilesNumber = 9;
+        int remainingFilesNumber = fileAmount; //количество файлов в папке на данный момент
+        // получить число после операции разбиения файла на маленькие
+
         int levelFilesNumber = remainingFilesNumber;
 
         while (remainingFilesNumber > 1) {
@@ -59,6 +61,7 @@ public class FileMerge {
             String line2 = br2.readLine();
 
             while (line1 != null && line2 != null) {
+                //"10" > "9"
                 if (line1.compareToIgnoreCase(line2) > 0) {
                     bw.write(line2 + "\n");
                     line2 = br2.readLine();
