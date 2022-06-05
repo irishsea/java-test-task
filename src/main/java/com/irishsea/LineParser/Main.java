@@ -95,19 +95,33 @@ public class Main {
          * проверка разбиения большого файла на маленькие по 400.000 строк в каждом
          */
 
-        File sourceFile = new File("sourceLargeFile.txt");
+        File sourceFile = new File("sourceLargeFile.csv");
 
         //от 5 секунд до 15 в зависимости от загруженности диска
         long start1 = System.currentTimeMillis();
         int fileAmount = FileSplit.splitLargeFileIntoSmallFiles(sourceFile);
         long end1 = System.currentTimeMillis();
-        System.out.println("1: " + (end1 - start1));
+        System.out.println("Общее время разделения файла: " + (end1 - start1));
 
         //от 11 секунд до 20 в зависимости от загруженности диска
         long start2 = System.currentTimeMillis();
         FileMerge.mergeAllFilesIntoOne(fileAmount);
         long end2 = System.currentTimeMillis();
-        System.out.println("2: " + (end2 - start2));
+        System.out.println("Общее время слияния файлов: " + (end2 - start2));
+
+//        try {
+//            FileSplit.testSpeedOfReadingFile(sourceFile);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+        /**
+         * Проверка, как парсится одна строка
+         */
+
+//        String lineForParse = new String("\"Батайск\";\"Мостотреста, улица\";133;4");
+//        LineWrapper lineWrapper = new LineWrapper(lineForParse);
+
 
     }
 }

@@ -15,7 +15,14 @@ public class FileMerge {
 
         while (remainingFilesNumber > 1) {
 
-            File dir = new File("sorted files/" + (sortLevel + 1));
+            File dir;
+            
+            if (remainingFilesNumber != 2) {
+                dir = new File("sorted files/" + (sortLevel + 1));
+            } else {
+                dir = new File("sorted files/" + "result");
+            }
+            
             dir.mkdirs();
 
             for (int i = 0; i < levelFilesNumber; i += 2) {
@@ -62,7 +69,7 @@ public class FileMerge {
 
             while (line1 != null && line2 != null) {
                 //"10" > "9"
-                if (line1.compareToIgnoreCase(line2) > 0) {
+                if (line1.compareToIgnoreCase(line2) > 0) { //если вторая строка "меньше"
                     bw.write(line2 + "\n");
                     line2 = br2.readLine();
                 } else {

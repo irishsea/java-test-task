@@ -1,5 +1,7 @@
 package com.irishsea.mergeSort;
 
+import com.irishsea.LineParser.LineWrapper;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,7 +12,7 @@ public class FileSplit {
      */
 
     public static int splitLargeFileIntoSmallFiles(File sourceFile) {
-//        final int amountOfResultFiles = 4;
+
         final int linesPerFile = 400000;
         int fileCounter = 0;
         File outputDirectory = new File("sorted files/0");
@@ -20,16 +22,17 @@ public class FileSplit {
 
         try {
             reader = new BufferedReader(new FileReader(sourceFile));
-            ArrayList<String> linesList = new ArrayList<>();
+            ArrayList<LineWrapper> linesList = new ArrayList<>();
 
             String line;
 
             while ((line = reader.readLine()) != null) {  //что если в файле встретится просто пустая строка?
                 /**
-                 * тут изменить строку, чтобы количество этажей было на втором месте
+                 * обертка над строкой переставляет атрибуты местами для более легкого поиска дубликатов в дальнейшем
                  */
+                LineWrapper lineWrapper = new LineWrapper(line);
 
-                linesList.add(line);
+                linesList.add(lineWrapper);
 
                 //как только набралось нужное количество строк для записи в файл
                 if (linesList.size() == linesPerFile) {
@@ -42,9 +45,10 @@ public class FileSplit {
                                 + fileCounter
                                 + ".txt"));
 
-                        for (String row : linesList) {
-                            writer.write(row + "\n");
+                        for (LineWrapper row : linesList) {
+                            writer.write(row.line + "\n");
                         }
+
                     } finally {
                         writer.flush();
                         writer.close();
@@ -70,7 +74,19 @@ public class FileSplit {
         return fileCounter;
     }
 
-//    public static String modifyLine(String line){
-//
-//    }
+    public static void testSpeedOfReadingFile(File sourceFile) throws IOException {
+        long start = System.currentTimeMillis();
+        BufferedReader reader = new BufferedReader(new FileReader(sourceFile));
+        String line;
+
+        while ((line = reader.readLine()) != null) {
+
+        }
+        long end = System.currentTimeMillis();
+        System.out.println("Время чтения файла: " + (end - start));
+    }
+
+    public static String modifyLine(String line) {
+        return null;
+    }
 }
