@@ -1,4 +1,4 @@
-package com.irishsea;
+package com.irishsea.HashmapParse;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;

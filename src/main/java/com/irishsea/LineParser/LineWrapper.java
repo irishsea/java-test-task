@@ -9,43 +9,26 @@ import java.util.regex.Pattern;
 public class LineWrapper implements Comparable<LineWrapper> {
 
     public final String line;
-    private String[] attributes;
+    public final String city;
+    public final String street;
+    private final String house;
+    private final int floor;
 
     public LineWrapper(String line) {
         this.line = line;
         // операция split добавляет около 1.5-2 секунд для всех записей;
-        // обслуживание поля attributes - еще около 3 секунд.
+        // обслуживание поля attributes[] - еще около 3 секунд.
         // Навероное, стоит вернуть 4 стринговых поля.
-        parseLine();
-    }
-
-    public String getCity() {
-        return attributes[0];
-    }
-
-    public String getStreet() {
-        return attributes[1];
-    }
-
-    public String getHouse() {
-        return attributes[2];
-    }
-
-    public int getFloor() {
-        return Integer.parseInt(attributes[3]);
+        String[] attributes = line.split(";");
+        this.city = attributes[0];
+        this.street = attributes[1];
+        this.house = attributes[2];
+        this.floor = Integer.parseInt(attributes[3]);
     }
 
 //    public String getModifiedLine() {
 //        return getCity() + ";" + getFloor() + ";" + getStreet() + ";" + getHouse();
 //    }
-
-    public void parseLine() {
-        /**
-         * Получать данные по индексу массива опасно, потому что могут поступить данные с другим порядком
-         */
-
-        this.attributes = line.split(";");
-    }
 
 
     @Override
@@ -55,33 +38,33 @@ public class LineWrapper implements Comparable<LineWrapper> {
          * функция на данном этапе разработки нигде не используется
          */
 
-        return o.line.compareTo(line);
+//        return o.line.compareTo(line);
 
-//        int result = o.getCity().compareTo(getCity());
-//
-//        if (result != 0) {
-//            return result;
-//        }
-//
-//        result = Integer.compare(o.getFloor(), getFloor());
-//
-//        if (result != 0) {
-//            return result;
-//        }
-//
-//        result = o.getStreet().compareToIgnoreCase(getStreet());
-//
-//        if (result != 0) {
-//            return result;
-//        }
-//
-//        result = o.getHouse().compareTo(getHouse());
-//
-//        if (result != 0) {
-//            return result;
-//        }
-//
-//        return 0;
+        int result = o.city.compareToIgnoreCase(this.city);
+
+        if (result != 0) {
+            return result;
+        }
+
+        result = Integer.compare(o.floor, this.floor);
+
+        if (result != 0) {
+            return result;
+        }
+
+        result = o.street.compareToIgnoreCase(this.street);
+
+        if (result != 0) {
+            return result;
+        }
+
+        result = o.house.compareToIgnoreCase(this.house);
+
+        if (result != 0) {
+            return result;
+        }
+
+        return 0;
     }
 
 

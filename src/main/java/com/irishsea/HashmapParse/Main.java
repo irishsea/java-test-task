@@ -1,8 +1,7 @@
-package com.irishsea;
+package com.irishsea.HashmapParse;
 
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
 public class Main {
