@@ -11,14 +11,13 @@ public class LineWrapper implements Comparable<LineWrapper> {
     public final String line;
     public final String city;
     public final String street;
-    private final String house;
-    private final int floor;
+    public final String house;
+    public final int floor;
 
     public LineWrapper(String line) {
         this.line = line;
         // операция split добавляет около 1.5-2 секунд для всех записей;
         // обслуживание поля attributes[] - еще около 3 секунд.
-        // Навероное, стоит вернуть 4 стринговых поля.
         String[] attributes = line.split(";");
         this.city = attributes[0];
         this.street = attributes[1];
@@ -35,7 +34,6 @@ public class LineWrapper implements Comparable<LineWrapper> {
     public int compareTo(LineWrapper o) {
         /**
          * сравнение двух строк по всем атрибутам (город, этажи, улица, номер дома)
-         * функция на данном этапе разработки нигде не используется
          */
 
 //        return o.line.compareTo(line);

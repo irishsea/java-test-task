@@ -1,5 +1,6 @@
 package com.irishsea.LineParser;
 
+import com.irishsea.mergeSort.FileAnalyzer;
 import com.irishsea.mergeSort.FileMerge;
 import com.irishsea.mergeSort.FileSplit;
 
@@ -96,18 +97,31 @@ public class Main {
          */
 
         File sourceFile = new File("sourceLargeFile.csv");
+//        File sourceFile = new File("testSourceFile.csv");
 
-        //от 5 секунд до 15 в зависимости от загруженности диска
-        long start1 = System.currentTimeMillis();
-        int fileAmount = FileSplit.splitLargeFileIntoSmallFiles(sourceFile);
-        long end1 = System.currentTimeMillis();
-        System.out.println("Общее время разделения файла: " + (end1 - start1));
+//        //от 5 секунд до 15 в зависимости от загруженности диска
+//        long start1 = System.currentTimeMillis();
+//        int fileAmount = FileSplit.splitLargeFileIntoSmallFiles(sourceFile);
+//        long end1 = System.currentTimeMillis();
+//        System.out.println("Общее время разделения файла: " + (end1 - start1));
 
-        //от 11 секунд до 20 в зависимости от загруженности диска
-        long start2 = System.currentTimeMillis();
-        FileMerge.mergeAllFilesIntoOne(fileAmount);
-        long end2 = System.currentTimeMillis();
-        System.out.println("Общее время слияния файлов: " + (end2 - start2));
+//        //от 11 секунд до 20 в зависимости от загруженности диска
+//        long start2 = System.currentTimeMillis();
+//        FileMerge.mergeAllFilesIntoOne(fileAmount);
+//        long end2 = System.currentTimeMillis();
+//        System.out.println("Общее время слияния файлов: " + (end2 - start2));
+
+        /**
+         * Проверка, как ищутся дубликаты
+         */
+
+        try {
+            int fileAmount = FileSplit.splitLargeFileIntoSmallFiles(sourceFile);
+            File destFile = FileMerge.mergeAllFilesIntoOne(fileAmount);
+            FileAnalyzer fileAnalyzer = new FileAnalyzer(destFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 //        try {
 //            FileSplit.testSpeedOfReadingFile(sourceFile);

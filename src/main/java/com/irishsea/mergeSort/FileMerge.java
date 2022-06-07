@@ -1,11 +1,13 @@
 package com.irishsea.mergeSort;
 
+import com.irishsea.LineParser.LineWrapper;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
 public class FileMerge {
-    public static void mergeAllFilesIntoOne(int fileAmount) {
+    public static File mergeAllFilesIntoOne(int fileAmount) {
 
         int sortLevel = 0;
         int remainingFilesNumber = fileAmount; //количество файлов в папке на данный момент
@@ -16,13 +18,13 @@ public class FileMerge {
         while (remainingFilesNumber > 1) {
 
             File dir;
-            
+
             if (remainingFilesNumber != 2) {
                 dir = new File("sorted files/" + (sortLevel + 1));
             } else {
                 dir = new File("sorted files/" + "result");
             }
-            
+
             dir.mkdirs();
 
             for (int i = 0; i < levelFilesNumber; i += 2) {
@@ -37,7 +39,7 @@ public class FileMerge {
 
                     } else {
                         File file2 = new File("sorted files/" + sortLevel + "/temp" + (i + 1) + ".txt");
-                        mergeSortedFiles(file1, file2, destFile); //обработать случай с нечетным количеством файлов
+                        mergeSortedFiles(file1, file2, destFile);
 
                         remainingFilesNumber--;
                     }
@@ -50,7 +52,7 @@ public class FileMerge {
             levelFilesNumber = remainingFilesNumber;
             sortLevel++;
         }
-
+        return new File("sorted files/result/temp0.txt");
     }
 
     public static void mergeSortedFiles(File file1, File file2, File outputFile) throws IOException {
@@ -68,8 +70,11 @@ public class FileMerge {
             String line2 = br2.readLine();
 
             while (line1 != null && line2 != null) {
+
+                LineWrapper lineWrapper1 = new LineWrapper(line1);
+                LineWrapper lineWrapper2 = new LineWrapper(line2);
                 //"10" > "9"
-                if (line1.compareToIgnoreCase(line2) > 0) { //если вторая строка "меньше"
+                if (lineWrapper1.compareTo(lineWrapper2) < 0) { //если вторая строка "меньше"
                     bw.write(line2 + "\n");
                     line2 = br2.readLine();
                 } else {

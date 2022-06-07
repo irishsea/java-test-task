@@ -13,7 +13,7 @@ public class FileSplit {
 
     public static int splitLargeFileIntoSmallFiles(File sourceFile) {
 
-        final int linesPerFile = 400000;
+        final int linesPerFile = 400000; //было 400.000
         int fileCounter = 0;
         File outputDirectory = new File("sorted files/0");
         outputDirectory.mkdirs();
@@ -37,7 +37,7 @@ public class FileSplit {
 
                 //как только набралось нужное количество строк для записи в файл
                 if (linesList.size() == linesPerFile) {
-                    Collections.sort(linesList); //сортировка строк в файле
+                    Collections.sort(linesList, Collections.reverseOrder()); //сортировка строк в файле
 
                     BufferedWriter writer = null;
                     try {
