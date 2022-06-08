@@ -48,6 +48,7 @@ public class FileMerge {
                     e.printStackTrace();
                 }
             }
+            deleteDirectory(new File("sorted files/" + (sortLevel)));
 
             levelFilesNumber = remainingFilesNumber;
             sortLevel++;
@@ -106,5 +107,15 @@ public class FileMerge {
             }
         }
 
+    }
+
+    private static boolean deleteDirectory(File directoryToBeDeleted) {
+        File[] allContents = directoryToBeDeleted.listFiles();
+        if (allContents != null) {
+            for (File file : allContents) {
+                deleteDirectory(file);
+            }
+        }
+        return directoryToBeDeleted.delete();
     }
 }
