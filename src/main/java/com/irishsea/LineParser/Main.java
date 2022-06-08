@@ -4,6 +4,7 @@ import com.irishsea.mergeSort.FileAnalyzer;
 import com.irishsea.mergeSort.FileMerge;
 import com.irishsea.mergeSort.FileSplit;
 
+import javax.xml.stream.XMLStreamException;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -98,6 +99,8 @@ public class Main {
 
         File sourceFile = new File("sourceLargeFile.csv");
 //        File sourceFile = new File("testSourceFile.csv");
+//        File sourceFile = new File("address.xml");
+//        File sourceFile = new File("addressLite.xml");
 
 //        //от 5 секунд до 15 в зависимости от загруженности диска
 //        long start1 = System.currentTimeMillis();
@@ -112,7 +115,7 @@ public class Main {
 //        System.out.println("Общее время слияния файлов: " + (end2 - start2));
 
         /**
-         * Проверка, как ищутся дубликаты
+         * Проверка, как ищутся дубликаты и аггрегируются данные
          */
 
         try {
@@ -136,6 +139,27 @@ public class Main {
 //        String lineForParse = new String("\"Батайск\";\"Мостотреста, улица\";133;4");
 //        LineWrapper lineWrapper = new LineWrapper(lineForParse);
 
+        /**
+         * Проверка, как парсится xml файл
+         */
+
+//        StaxProcessor staxProcessor = new StaxProcessor();
+//        staxProcessor.parseFile(sourceFile);
+
+        /**
+         * Проверка, как программа работает с xml файлом
+         */
+
+//        try {
+//            StaxProcessor staxProcessor = new StaxProcessor();
+//            File fromXmlFile = staxProcessor.parseFile(sourceFile);
+//
+//            int fileAmount = FileSplit.splitLargeFileIntoSmallFiles(fromXmlFile);
+//            File destFile = FileMerge.mergeAllFilesIntoOne(fileAmount);
+//            FileAnalyzer fileAnalyzer = new FileAnalyzer(destFile);
+//        } catch (IOException | XMLStreamException e) {
+//            e.printStackTrace();
+//        }
 
     }
 }

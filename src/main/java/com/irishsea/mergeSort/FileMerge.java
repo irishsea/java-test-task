@@ -73,8 +73,8 @@ public class FileMerge {
 
                 LineWrapper lineWrapper1 = new LineWrapper(line1);
                 LineWrapper lineWrapper2 = new LineWrapper(line2);
-                //"10" > "9"
-                if (lineWrapper1.compareTo(lineWrapper2) < 0) { //если вторая строка "меньше"
+
+                if (lineWrapper1.compareTo(lineWrapper2) > 0) { //если вторая строка "меньше"
                     bw.write(line2 + "\n");
                     line2 = br2.readLine();
                 } else {
