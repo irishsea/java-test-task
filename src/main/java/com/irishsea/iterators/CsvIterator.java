@@ -24,6 +24,7 @@ public class CsvIterator implements Iterator<String> {
         if (finished) { //если строки в документе закончились
             return false;
         }
+
         try {
             String line = reader.readLine();
 
@@ -47,13 +48,10 @@ public class CsvIterator implements Iterator<String> {
 
     @Override
     public String next() {
-        return nextLine();
-    }
-
-    private String nextLine() {
         if (!hasNext()) {
             throw new NoSuchElementException("File is finished or it has empty rows");
         }
+
         String currentLine = cachedLine;
         cachedLine = null;
         return currentLine;

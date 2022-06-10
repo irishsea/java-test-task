@@ -1,4 +1,4 @@
-package com.irishsea.mergeSort;
+package com.irishsea;
 
 import com.irishsea.LineWrapper;
 

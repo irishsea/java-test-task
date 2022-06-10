@@ -53,6 +53,4 @@ public class LineWrapper implements Comparable<LineWrapper> {
 
         return result;
     }
-
-
 }

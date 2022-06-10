@@ -58,17 +58,30 @@ public class FileMerge {
             String line1 = br1.readLine();
             String line2 = br2.readLine();
 
-            while (line1 != null && line2 != null) {
-
+            if (line1 != null && line2 != null) {
                 LineWrapper lineWrapper1 = new LineWrapper(line1);
                 LineWrapper lineWrapper2 = new LineWrapper(line2);
 
-                if (lineWrapper1.compareTo(lineWrapper2) > 0) { //если вторая строка "меньше"
-                    bw.write(line2 + "\n");
-                    line2 = br2.readLine();
-                } else {
-                    bw.write(line1 + "\n");
-                    line1 = br1.readLine();
+                while (true) {
+                    if (lineWrapper2.compareTo(lineWrapper1) > 0) { //если вторая строка "меньше"
+                        bw.write(line1 + "\n");
+                        line1 = br1.readLine();
+
+                        if (line1 == null) {
+                            break;
+                        }
+
+                        lineWrapper1 = new LineWrapper(line1);
+                    } else {
+                        bw.write(line2 + "\n");
+                        line2 = br2.readLine();
+
+                        if (line2 == null) {
+                            break;
+                        }
+
+                        lineWrapper2 = new LineWrapper(line2);
+                    }
                 }
             }
 

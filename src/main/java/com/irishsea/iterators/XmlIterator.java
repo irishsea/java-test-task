@@ -28,8 +28,10 @@ public class XmlIterator implements Iterator<String> {
             while (reader.hasNext()) {
                 int eventType = reader.next();
 
-                if (eventType == XMLEvent.START_ELEMENT
-                        && (reader.getName().getLocalPart().equals("item"))) {
+                Boolean isValidEvent = eventType == XMLEvent.START_ELEMENT
+                        && (reader.getName().getLocalPart().equals("item"));
+
+                if (isValidEvent) {
                     String city = reader.getAttributeValue(null, "city");
                     String street = reader.getAttributeValue(null, "street");
                     String house = reader.getAttributeValue(null, "house");
@@ -39,6 +41,7 @@ public class XmlIterator implements Iterator<String> {
                             + street + ";"
                             + house + ";"
                             + floor;
+
                     return true;
                 }
             }
@@ -50,14 +53,10 @@ public class XmlIterator implements Iterator<String> {
 
     @Override
     public String next() {
-        return nextLine();
-    }
-
-    private String nextLine() {
         if (!hasNext()) {
             throw new NoSuchElementException("File is finished or it has empty lines");
         }
-
+        
         String currentLine = cachedLine;
         cachedLine = null;
         return currentLine;
