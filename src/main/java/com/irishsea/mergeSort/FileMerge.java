@@ -1,14 +1,14 @@
 package com.irishsea.mergeSort;
 
-import com.irishsea.LineParser.LineWrapper;
+import com.irishsea.LineWrapper;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
 public class FileMerge {
-    public static File mergeAllFilesIntoOne(int fileAmount) {
 
+    public static File mergeAllFilesIntoOne(int fileAmount) {
         int sortLevel = 0;
         int remainingFilesNumber = fileAmount; //количество файлов в папке на данный момент
         // получить число после операции разбиения файла на маленькие
@@ -16,15 +16,8 @@ public class FileMerge {
         int levelFilesNumber = remainingFilesNumber;
 
         while (remainingFilesNumber > 1) {
-
-            File dir;
-
-            if (remainingFilesNumber != 2) {
-                dir = new File("sorted files/" + (sortLevel + 1));
-            } else {
-                dir = new File("sorted files/" + "result");
-            }
-
+            String dirName = remainingFilesNumber == 2 ? "result" : String.valueOf(sortLevel + 1);
+            File dir = new File("sorted files/" + dirName);
             dir.mkdirs();
 
             for (int i = 0; i < levelFilesNumber; i += 2) {
@@ -36,13 +29,12 @@ public class FileMerge {
                     if (i + 1 == levelFilesNumber) {
                         //файл просто переходит на следующий уровень
                         Files.copy(file1.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-
-                    } else {
-                        File file2 = new File("sorted files/" + sortLevel + "/temp" + (i + 1) + ".txt");
-                        mergeSortedFiles(file1, file2, destFile);
-
-                        remainingFilesNumber--;
+                        break;
                     }
+
+                    File file2 = new File("sorted files/" + sortLevel + "/temp" + (i + 1) + ".txt");
+                    mergeSortedFiles(file1, file2, destFile);
+                    remainingFilesNumber--;
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -58,15 +50,11 @@ public class FileMerge {
 
     public static void mergeSortedFiles(File file1, File file2, File outputFile) throws IOException {
 
-        BufferedReader br1 = null;
-        BufferedReader br2 = null;
-        BufferedWriter bw = null;
-
-        try {
-            br1 = new BufferedReader(new FileReader(file1));
-            br2 = new BufferedReader(new FileReader(file2));
-            bw = new BufferedWriter(new FileWriter(outputFile));
-
+        try (
+                BufferedReader br1 = new BufferedReader(new FileReader(file1));
+                BufferedReader br2 = new BufferedReader(new FileReader(file2));
+                BufferedWriter bw = new BufferedWriter(new FileWriter(outputFile))
+        ) {
             String line1 = br1.readLine();
             String line2 = br2.readLine();
 
@@ -96,15 +84,6 @@ public class FileMerge {
 
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                br1.close();
-                br2.close();
-                bw.flush();
-                bw.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
 
     }

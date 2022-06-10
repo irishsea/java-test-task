@@ -1,6 +1,6 @@
 package com.irishsea.mergeSort;
 
-import com.irishsea.LineParser.LineWrapper;
+import com.irishsea.LineWrapper;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -8,7 +8,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class FileAnalyzer {
-    private File file;
+    private final File file;
 
     public FileAnalyzer(File file) throws IOException {
         this.file = file;
@@ -16,26 +16,14 @@ public class FileAnalyzer {
         aggregateDataByCityAndFloor();
     }
 
-
-    public void searchDuplicates() throws IOException {
-
-        /**
-         * пока не кончится документ, считывать по строке.
-         * Запомнить первую считанную, сравнить со второй считанной. Если они равны, то запомнить строку и
-         * увеличить для нее счетчик на 1. Дубликаты помещать в HashMap для начала,
-         * где сама строка - ключ, а счетчик - значение.
-         * Строки отсортированы, поэтому как только результат сравнения предыдущей и текущей
-         * строк станет false, нужно запомнить эту текущую строку и сравнивать следующую уже с ней.
-         */
-
+    public void searchDuplicates() {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String previousLine = null;
+            String previousLine;
             int duplicateCounter = 0;
 
             String line = reader.readLine();
 
             while (line != null) { //основной цикл чтения файла
-
                 previousLine = line;
                 line = reader.readLine();
 
@@ -50,7 +38,6 @@ public class FileAnalyzer {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     public void aggregateDataByCityAndFloor() {
@@ -88,7 +75,6 @@ public class FileAnalyzer {
                     recordCounter = 1;
                 }
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }

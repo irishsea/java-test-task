@@ -1,96 +1,62 @@
 package com.irishsea.mergeSort;
 
-import com.irishsea.LineParser.LineWrapper;
+import com.irishsea.LineWrapper;
 
+import javax.xml.stream.XMLStreamException;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 
 public class FileSplit {
+    private final Iterator<String> iterator;
+
     /**
      * Метод, который принимает исходный большой файл
      */
 
-    public static int splitLargeFileIntoSmallFiles(File sourceFile) {
+    public FileSplit(Iterator<String> iterator) {
+        this.iterator = iterator;
+    }
 
-        final int linesPerFile = 400000; //было 400.000
+    public int splitLargeFileIntoSmallFiles(int linesPerFile) throws XMLStreamException {
         int fileCounter = 0;
         File outputDirectory = new File("sorted files/0");
         outputDirectory.mkdirs();
-        BufferedReader reader = null;
 
+        ArrayList<LineWrapper> linesList = new ArrayList<>();
+        String line;
 
-        try {
-            reader = new BufferedReader(new FileReader(sourceFile));
-            ArrayList<LineWrapper> linesList = new ArrayList<>();
+        while (iterator.hasNext()) {  //что если в файле встретится просто пустая строка?
+            line = iterator.next();
 
-            String line = reader.readLine();
+            /**
+             * обертка над строкой LineWrapper позволяет отсортировать в их порядке "город > кол-во этажей > улица > дом
+             * для более легкой операции агрегации в дальнейшем
+             **/
+            LineWrapper lineWrapper = new LineWrapper(line);
+            linesList.add(lineWrapper);
 
-            while (line != null) {  //что если в файле встретится просто пустая строка?
-                /**
-                 * обертка над строкой позволяет отсортировать в их порядке "город > кол-во этажей > улица > дом
-                 * для более легкой операции агрегации в дальнейшем
-                 **/
-                LineWrapper lineWrapper = new LineWrapper(line);
-                linesList.add(lineWrapper);
+            //как только набралось нужное количество строк для записи в файл
+            if (linesList.size() == linesPerFile || !iterator.hasNext()) {
+                Collections.sort(linesList); //сортировка строк в файле
 
-                line = reader.readLine();
-
-                //как только набралось нужное количество строк для записи в файл
-                if (linesList.size() == linesPerFile || line == null) {
-                    Collections.sort(linesList); //сортировка строк в файле
-
-                    BufferedWriter writer = null;
-                    try {
-                        writer = new BufferedWriter(new FileWriter(outputDirectory
-                                + "/temp"
-                                + fileCounter
-                                + ".txt"));
-
-                        for (LineWrapper row : linesList) {
-                            writer.write(row.line + "\n");
-                        }
-
-                    } finally {
-                        writer.flush();
-                        writer.close();
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputDirectory
+                        + "/temp"
+                        + fileCounter
+                        + ".txt"))) {
+                    for (LineWrapper row : linesList) {
+                        writer.write(row.line + "\n");
                     }
-
-                    fileCounter++;
-                    linesList.clear();
-
-
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
-            }
-
-        } catch (
-                IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                reader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+                fileCounter++;
+                linesList.clear();
             }
         }
 
         return fileCounter;
-    }
-
-    public static void testSpeedOfReadingFile(File sourceFile) throws IOException {
-        long start = System.currentTimeMillis();
-        BufferedReader reader = new BufferedReader(new FileReader(sourceFile));
-        String line;
-
-        while ((line = reader.readLine()) != null) {
-
-        }
-        long end = System.currentTimeMillis();
-        System.out.println("Время чтения файла: " + (end - start));
-    }
-
-    public static String modifyLine(String line) {
-        return null;
     }
 }

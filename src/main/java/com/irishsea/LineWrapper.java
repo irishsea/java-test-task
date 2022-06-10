@@ -1,9 +1,7 @@
 /**
  * Класс - обертка над строкой, дает доступ к частям строки
  */
-package com.irishsea.LineParser;
-
-import java.util.regex.Pattern;
+package com.irishsea;
 
 
 public class LineWrapper implements Comparable<LineWrapper> {
@@ -24,11 +22,6 @@ public class LineWrapper implements Comparable<LineWrapper> {
         this.house = attributes[2];
         this.floor = Integer.parseInt(attributes[3]);
     }
-
-//    public String getModifiedLine() {
-//        return getCity() + ";" + getFloor() + ";" + getStreet() + ";" + getHouse();
-//    }
-
 
     @Override
     public int compareTo(LineWrapper o) {
@@ -58,11 +51,7 @@ public class LineWrapper implements Comparable<LineWrapper> {
 
         result = o.house.compareToIgnoreCase(this.house);
 
-        if (result != 0) {
-            return result;
-        }
-
-        return 0;
+        return result;
     }
 
 
