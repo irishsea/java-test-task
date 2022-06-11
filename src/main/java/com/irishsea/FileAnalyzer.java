@@ -1,11 +1,10 @@
 package com.irishsea;
 
 import com.irishsea.LineWrapper;
+import com.irishsea.iterators.CommonIterator;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import javax.sound.sampled.Line;
+import java.io.*;
 
 public class FileAnalyzer {
     private final File file;
@@ -18,10 +17,9 @@ public class FileAnalyzer {
 
     public void searchDuplicates() {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String previousLine;
             int duplicateCounter = 0;
-
             String line = reader.readLine();
+            String previousLine;
 
             while (line != null) { //основной цикл чтения файла
                 previousLine = line;
@@ -40,43 +38,60 @@ public class FileAnalyzer {
         }
     }
 
-    public void aggregateDataByCityAndFloor() {
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line;
-            LineWrapper current = null;
-            LineWrapper previous;
-            int recordCounter = 1;
+    public void aggregateDataByCityAndFloor() throws FileNotFoundException {
+        CommonIterator iterator = new CommonIterator(file);
 
-            while ((line = reader.readLine()) != null) { //основной цикл чтения файла
-                previous = current;
-                current = new LineWrapper(line);
+        // Если файл пуст
+        if (!iterator.hasNext()) {
+            return;
+        }
 
-                if (previous == null) {
-                    continue;
-                }
+        int recordCounter = 1;
+        LineWrapper current = iterator.next();
 
-                boolean isEqual = previous.city.equals(current.city)
-                        && previous.floor == current.floor;
+        // Если в файле 1 запись
+        if (!iterator.hasNext()) {
+            System.out.println("Количество домов в городе: "
+                    + current.city
+                    + " с количеством этажей: "
+                    + current.floor
+                    + " равно: "
+                    + recordCounter);
+            return;
+        }
 
-                if (isEqual) {
-                    recordCounter++;
-                } else {
-                    /**
-                     * как только началась новая группа данных,
-                     * выводим данные о предыдущей группе
-                     */
+        while (iterator.hasNext()) {
+            LineWrapper previous = current;
+            current = iterator.next();
+
+            boolean isEqual = previous.city.equals(current.city)
+                    && previous.floor == current.floor;
+
+            if (isEqual) {
+                recordCounter++;
+
+                // Если текущая запись последняя
+                if (!iterator.hasNext()) {
                     System.out.println("Количество домов в городе: "
-                            + previous.city
+                            + current.city
                             + " с количеством этажей: "
-                            + previous.floor
+                            + current.floor
                             + " равно: "
                             + recordCounter);
-
-                    recordCounter = 1;
                 }
+
+                continue;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+
+            // Если обнаружили начало новой группы
+            System.out.println("Количество домов в городе: "
+                    + previous.city
+                    + " с количеством этажей: "
+                    + previous.floor
+                    + " равно: "
+                    + recordCounter);
+
+            recordCounter = 1;
         }
     }
 }

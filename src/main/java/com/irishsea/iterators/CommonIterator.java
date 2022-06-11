@@ -1,25 +1,23 @@
 package com.irishsea.iterators;
 
+import com.irishsea.LineWrapper;
+
 import java.io.*;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-
-public class CsvIterator implements Iterator<String> {
-    private String cachedLine;
+public class CommonIterator implements Iterator<LineWrapper> {
+    private LineWrapper cachedItem;
     private final BufferedReader reader;
-
     private boolean finished = false;
 
-    public CsvIterator(final File file) throws IOException {
+    public CommonIterator(final File file) throws FileNotFoundException {
         this.reader = new BufferedReader(new FileReader(file));
-        /** пропускаем шапку таблицы CSV */
-        reader.readLine();
     }
 
     @Override
     public boolean hasNext() {
-        if (cachedLine != null) {
+        if (cachedItem != null) {
             return true;
         }
 
@@ -32,9 +30,11 @@ public class CsvIterator implements Iterator<String> {
 
             if (line == null) {
                 finished = true;
+                reader.close();
                 return false;
             }
-            cachedLine = line;
+
+            cachedItem = new LineWrapper(line);
             return true;
 
         } catch (IOException ioe) {
@@ -48,17 +48,13 @@ public class CsvIterator implements Iterator<String> {
     }
 
     @Override
-    public String next() {
+    public LineWrapper next() {
         if (!hasNext()) {
             throw new NoSuchElementException("File is finished or it has empty rows");
         }
 
-        String currentLine = cachedLine;
-        cachedLine = null;
-        return currentLine;
-    }
-
-    private boolean isValid() {
-        return false;
+        LineWrapper currentItem = cachedItem;
+        cachedItem = null;
+        return currentItem;
     }
 }

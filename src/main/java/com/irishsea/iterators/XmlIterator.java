@@ -28,7 +28,7 @@ public class XmlIterator implements Iterator<String> {
             while (reader.hasNext()) {
                 int eventType = reader.next();
 
-                Boolean isValidEvent = eventType == XMLEvent.START_ELEMENT
+                boolean isValidEvent = eventType == XMLEvent.START_ELEMENT
                         && (reader.getName().getLocalPart().equals("item"));
 
                 if (isValidEvent) {
@@ -56,7 +56,7 @@ public class XmlIterator implements Iterator<String> {
         if (!hasNext()) {
             throw new NoSuchElementException("File is finished or it has empty lines");
         }
-        
+
         String currentLine = cachedLine;
         cachedLine = null;
         return currentLine;

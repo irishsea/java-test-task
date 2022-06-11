@@ -1,6 +1,7 @@
 package com.irishsea.mergeSort;
 
 import com.irishsea.LineWrapper;
+import com.irishsea.iterators.CommonIterator;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -49,50 +50,36 @@ public class FileMerge {
     }
 
     public static void mergeSortedFiles(File file1, File file2, File outputFile) throws IOException {
-
+        CommonIterator iterator1 = new CommonIterator(file1);
+        CommonIterator iterator2 = new CommonIterator(file2);
         try (
-                BufferedReader br1 = new BufferedReader(new FileReader(file1));
-                BufferedReader br2 = new BufferedReader(new FileReader(file2));
                 BufferedWriter bw = new BufferedWriter(new FileWriter(outputFile))
         ) {
-            String line1 = br1.readLine();
-            String line2 = br2.readLine();
-
-            if (line1 != null && line2 != null) {
-                LineWrapper lineWrapper1 = new LineWrapper(line1);
-                LineWrapper lineWrapper2 = new LineWrapper(line2);
-
-                while (true) {
-                    if (lineWrapper2.compareTo(lineWrapper1) > 0) { //если вторая строка "меньше"
-                        bw.write(line1 + "\n");
-                        line1 = br1.readLine();
-
-                        if (line1 == null) {
-                            break;
-                        }
-
-                        lineWrapper1 = new LineWrapper(line1);
+            if (iterator1.hasNext() && iterator2.hasNext()) {
+                LineWrapper item1 = iterator1.next();
+                LineWrapper item2 = iterator2.next();
+                /**
+                *todo: обработать ситуацию, когда в файлах по одной строке
+                */
+                while (iterator1.hasNext() && iterator2.hasNext()) {
+                    if (item2.compareTo(item1) > 0) { //если первая строка "меньше"
+                        bw.write(item1.line + "\n");
+                        item1 = iterator1.next();
                     } else {
-                        bw.write(line2 + "\n");
-                        line2 = br2.readLine();
-
-                        if (line2 == null) {
-                            break;
-                        }
-
-                        lineWrapper2 = new LineWrapper(line2);
+                        bw.write(item2.line + "\n");
+                        item2 = iterator2.next();
                     }
                 }
             }
 
-            while (line1 != null) {
-                bw.write(line1 + "\n");
-                line1 = br1.readLine();
+            while (iterator1.hasNext()) {
+                LineWrapper item1 = iterator1.next();
+                bw.write(item1.line + "\n");
             }
 
-            while (line2 != null) {
-                bw.write(line2 + "\n");
-                line2 = br2.readLine();
+            while (iterator2.hasNext()) {
+                LineWrapper item2 = iterator2.next();
+                bw.write(item2.line + "\n");
             }
 
         } catch (IOException e) {
@@ -101,13 +88,13 @@ public class FileMerge {
 
     }
 
-    private static boolean deleteDirectory(File directoryToBeDeleted) {
+    public static void deleteDirectory(File directoryToBeDeleted) {
         File[] allContents = directoryToBeDeleted.listFiles();
         if (allContents != null) {
             for (File file : allContents) {
                 deleteDirectory(file);
             }
         }
-        return directoryToBeDeleted.delete();
+        directoryToBeDeleted.delete();
     }
 }

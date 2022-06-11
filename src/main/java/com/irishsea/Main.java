@@ -10,13 +10,14 @@ import java.io.*;
 import java.util.Iterator;
 
 public class Main {
-    public static void main(String[] args) throws XMLStreamException, FileNotFoundException {
+    public static void main(String[] args) throws XMLStreamException, IOException {
 
         /**
          * проверка разбиения большого файла на маленькие по 400.000 строк в каждом
          */
 
-        File sourceFile = new File("sourceLargeFile.csv");
+//        File sourceFile = new File("sourceLargeFile.csv");
+        File sourceFile = new File("address.csv");
 //        File sourceFile = new File("testSourceFile.csv");
 //        File sourceFile = new File("address.xml");
 //        File sourceFile = new File("addressLite.xml");
@@ -34,17 +35,19 @@ public class Main {
             long startSplit = System.currentTimeMillis();
             int fileAmount = new FileSplit(iterator).splitLargeFileIntoSmallFiles(400000);
             long endSplit = System.currentTimeMillis();
-            System.out.println("Время разделения файлов и сортировки: " + (endSplit - startSplit));
+            System.out.println("Время разделения на отсортированные файлы: " + (endSplit - startSplit));
 
             long startMerge = System.currentTimeMillis();
             File destFile = FileMerge.mergeAllFilesIntoOne(fileAmount);
             long endMerge = System.currentTimeMillis();
-            System.out.println("Время слияния файлов: " + (endMerge - startMerge));
+            System.out.println("Время слияния отсортированных файлов: " + (endMerge - startMerge));
 
             long startAnalyze = System.currentTimeMillis();
             new FileAnalyzer(destFile);
             long endAnalyze = System.currentTimeMillis();
-            System.out.println("Время анализа файлов: " + (endAnalyze - startAnalyze));
+            System.out.println("Время формирования статистики: " + (endAnalyze - startAnalyze));
+
+            FileMerge.deleteDirectory(new File("sorted files"));
 
         } catch (IOException | XMLStreamException e) {
             e.printStackTrace();
