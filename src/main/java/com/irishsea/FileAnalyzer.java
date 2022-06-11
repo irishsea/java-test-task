@@ -47,47 +47,40 @@ public class FileAnalyzer {
         }
 
         int recordCounter = 1;
-        LineWrapper current = iterator.next();
+        LineWrapper next = iterator.next();
 
         // Если в файле 1 запись
         if (!iterator.hasNext()) {
             System.out.println("Количество домов в городе: "
-                    + current.city
+                    + next.city
                     + " с количеством этажей: "
-                    + current.floor
+                    + next.floor
                     + " равно: "
                     + recordCounter);
             return;
         }
 
         while (iterator.hasNext()) {
-            LineWrapper previous = current;
-            current = iterator.next();
+            LineWrapper current = next;
 
-            boolean isEqual = previous.city.equals(current.city)
-                    && previous.floor == current.floor;
+            // Считаем количество эквивалентных элементов, идущих подряд
+            while (iterator.hasNext()) {
+                next = iterator.next();
 
-            if (isEqual) {
-                recordCounter++;
+                boolean isEqual = current.city.equals(next.city)
+                        && current.floor == next.floor;
 
-                // Если текущая запись последняя
-                if (!iterator.hasNext()) {
-                    System.out.println("Количество домов в городе: "
-                            + current.city
-                            + " с количеством этажей: "
-                            + current.floor
-                            + " равно: "
-                            + recordCounter);
+                if (isEqual) {
+                    recordCounter++;
+                } else {
+                    break;
                 }
-
-                continue;
             }
 
-            // Если обнаружили начало новой группы
             System.out.println("Количество домов в городе: "
-                    + previous.city
+                    + current.city
                     + " с количеством этажей: "
-                    + previous.floor
+                    + current.floor
                     + " равно: "
                     + recordCounter);
 

@@ -1,0 +1,11 @@
+/.gradle/
+/.idea/
+/build/
+/sorted files/
+/temp files/
+/tmpFiles/
+address.xml
+sourceLargeFile.csv
+testSourceFile.csv
+addressLite.xml
+address.csv
