@@ -43,7 +43,9 @@ public class Main {
             System.out.println("Время слияния отсортированных файлов: " + (endMerge - startMerge));
 
             long startAnalyze = System.currentTimeMillis();
-            new FileAnalyzer(destFile);
+            FileAnalyzer fileAnalyzer = new FileAnalyzer(destFile);
+            fileAnalyzer.searchDuplicates();
+            fileAnalyzer.aggregateDataByCityAndFloor();
             long endAnalyze = System.currentTimeMillis();
             System.out.println("Время формирования статистики: " + (endAnalyze - startAnalyze));
 

@@ -1,6 +1,7 @@
 package com.irishsea;
 
 import com.irishsea.iterators.CommonIterator;
+
 import java.io.*;
 
 public class FileAnalyzer {
@@ -8,8 +9,8 @@ public class FileAnalyzer {
 
     public FileAnalyzer(File file) throws IOException {
         this.file = file;
-        searchDuplicates();
-        aggregateDataByCityAndFloor();
+//        searchDuplicates();
+//        aggregateDataByCityAndFloor();
     }
 
     public void searchDuplicates() {
@@ -38,46 +39,32 @@ public class FileAnalyzer {
     public void aggregateDataByCityAndFloor() throws FileNotFoundException {
         CommonIterator iterator = new CommonIterator(file);
 
-        // Если файл пуст
-        if (!iterator.hasNext()) {
-            return;
-        }
-
         int recordCounter = 1;
-        LineWrapper next = iterator.next();
+        LineWrapper current = iterator.next();
 
-        // Если в файле 1 запись
-        if (!iterator.hasNext()) {
-            System.out.println("Количество домов в городе: "
-                    + next.city
-                    + " с количеством этажей: "
-                    + next.floor
-                    + " равно: "
-                    + recordCounter);
-            return;
-        }
-
-        while (iterator.hasNext()) {
-            LineWrapper current = next;
+        while (current != null) {
+            LineWrapper previous = current;
+            current = iterator.next();
 
             // Считаем количество эквивалентных элементов, идущих подряд
-            while (iterator.hasNext()) {
-                next = iterator.next();
-
-                boolean isEqual = current.city.equals(next.city)
-                        && current.floor == next.floor;
+            while (current != null) {
+                boolean isEqual = previous.city.equals(current.city)
+                        && previous.floor == current.floor;
 
                 if (isEqual) {
                     recordCounter++;
+                    previous = current;
+                    current = iterator.next();
                 } else {
                     break;
+                    /**todo: если в файле 2 записи, и они не равны, то выведется информация только о первой. Исправить*/
                 }
             }
 
             System.out.println("Количество домов в городе: "
-                    + current.city
+                    + previous.city
                     + " с количеством этажей: "
-                    + current.floor
+                    + previous.floor
                     + " равно: "
                     + recordCounter);
 

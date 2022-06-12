@@ -13,12 +13,11 @@ import java.nio.file.Files;
 
 
 class FileMergeTest {
-    private static FileMerge fileMerge;
 
-    private static File file1 = new File("src/test/resources/case1/input1.txt");
-    private static File file2 = new File("src/test/resources/case1/input2.txt");
-    private static File outputFile = new File("src/test/resources/case1/output.txt");
-    private static File referenceFile = new File("src/test/resources/case1/reference.txt");
+    private static File file1 = new File("src/test/resources/merge/case1/input1.txt");
+    private static File file2 = new File("src/test/resources/merge/case1/input2.txt");
+    private static File outputFile = new File("src/test/resources/merge/case1/duplicate.txt");
+    private static File referenceFile = new File("src/test/resources/merge/case1/aggregation.txt");
 
     @BeforeAll
     static void beforeAll() throws IOException {
