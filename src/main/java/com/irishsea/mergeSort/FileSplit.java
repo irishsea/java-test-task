@@ -39,7 +39,7 @@ public class FileSplit {
 
             //как только набралось нужное количество строк для записи в файл
             if (linesList.size() == linesPerFile || !iterator.hasNext()) {
-                Collections.sort(linesList);
+                Collections.sort(linesList, Collections.reverseOrder());
 
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputDirectory
                         + "/temp"

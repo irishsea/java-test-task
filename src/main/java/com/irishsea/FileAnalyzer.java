@@ -1,9 +1,6 @@
 package com.irishsea;
 
-import com.irishsea.LineWrapper;
 import com.irishsea.iterators.CommonIterator;
-
-import javax.sound.sampled.Line;
 import java.io.*;
 
 public class FileAnalyzer {

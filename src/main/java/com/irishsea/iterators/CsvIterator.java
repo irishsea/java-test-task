@@ -50,7 +50,7 @@ public class CsvIterator implements Iterator<String> {
     @Override
     public String next() {
         if (!hasNext()) {
-            throw new NoSuchElementException("File is finished or it has empty rows");
+            return null;
         }
 
         String currentLine = cachedLine;

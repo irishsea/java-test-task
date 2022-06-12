@@ -50,7 +50,7 @@ public class CommonIterator implements Iterator<LineWrapper> {
     @Override
     public LineWrapper next() {
         if (!hasNext()) {
-            throw new NoSuchElementException("File is finished or it has empty rows");
+            return null;
         }
 
         LineWrapper currentItem = cachedItem;

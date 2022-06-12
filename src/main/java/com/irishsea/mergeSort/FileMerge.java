@@ -55,37 +55,31 @@ public class FileMerge {
         try (
                 BufferedWriter bw = new BufferedWriter(new FileWriter(outputFile))
         ) {
-            if (iterator1.hasNext() && iterator2.hasNext()) {
-                LineWrapper item1 = iterator1.next();
-                LineWrapper item2 = iterator2.next();
-                /**
-                *todo: обработать ситуацию, когда в файлах по одной строке
-                */
-                while (iterator1.hasNext() && iterator2.hasNext()) {
-                    if (item2.compareTo(item1) > 0) { //если первая строка "меньше"
-                        bw.write(item1.line + "\n");
-                        item1 = iterator1.next();
-                    } else {
-                        bw.write(item2.line + "\n");
-                        item2 = iterator2.next();
-                    }
+            LineWrapper item1 = iterator1.next();
+            LineWrapper item2 = iterator2.next();
+
+            while (item1 != null && item2 != null) {
+                if (item1.compareTo(item2) > 0) { //если первая строка "больше"
+                    bw.write(item1.line + "\n");
+                    item1 = iterator1.next();
+                } else {
+                    bw.write(item2.line + "\n");
+                    item2 = iterator2.next();
                 }
             }
 
-            while (iterator1.hasNext()) {
-                LineWrapper item1 = iterator1.next();
+            while (item1 != null) {
                 bw.write(item1.line + "\n");
+                item1 = iterator1.next();
             }
 
-            while (iterator2.hasNext()) {
-                LineWrapper item2 = iterator2.next();
+            while (item2 != null) {
                 bw.write(item2.line + "\n");
+                item2 = iterator2.next();
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     public static void deleteDirectory(File directoryToBeDeleted) {

@@ -54,7 +54,7 @@ public class XmlIterator implements Iterator<String> {
     @Override
     public String next() {
         if (!hasNext()) {
-            throw new NoSuchElementException("File is finished or it has empty lines");
+            return null;
         }
 
         String currentLine = cachedLine;
