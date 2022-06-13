@@ -17,9 +17,9 @@ public class Main {
          */
 
 //        File sourceFile = new File("sourceLargeFile.csv");
-        File sourceFile = new File("address.csv");
+//        File sourceFile = new File("address.csv");
 //        File sourceFile = new File("testSourceFile.csv");
-//        File sourceFile = new File("address.xml");
+        File sourceFile = new File("address.xml");
 //        File sourceFile = new File("addressLite.xml");
 
         /**

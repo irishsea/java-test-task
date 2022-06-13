@@ -57,7 +57,6 @@ public class FileAnalyzer {
                     current = iterator.next();
                 } else {
                     break;
-                    /**todo: если в файле 2 записи, и они не равны, то выведется информация только о первой. Исправить*/
                 }
             }
 
