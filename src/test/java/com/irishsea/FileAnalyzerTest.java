@@ -14,7 +14,7 @@ class FileAnalyzerTest {
 
 
     @BeforeAll
-    static void beforeAll() throws IOException {
+    static void beforeAll() {
         System.setOut(new PrintStream(outputStreamCaptor));
     }
 
@@ -23,16 +23,12 @@ class FileAnalyzerTest {
         System.setOut(standardOut);
     }
 
-    @Test
-    void searchDuplicatesTest() {
-
-    }
 
     @Test
     void aggregateDataByCityAndFloorTest() throws IOException {
         int caseNumber;
 
-        for (caseNumber = 5; caseNumber < 6; caseNumber++) {
+        for (caseNumber = 1; caseNumber < 6; caseNumber++) {
             File aggregation = new File("src/test/resources/analyze/case" + caseNumber + "/aggregation.txt");
             File aggregationOutput = new File("src/test/resources/analyze/case" + caseNumber + "/aggregationReference.txt");
             FileAnalyzer fileAnalyzer = new FileAnalyzer(aggregation);
@@ -47,7 +43,7 @@ class FileAnalyzerTest {
     }
 
     @Test
-    void searchDuplicates() throws IOException {
+    void searchDuplicatesTest() throws IOException {
         int caseNumber;
 
         for (caseNumber = 1; caseNumber < 5; caseNumber++) {

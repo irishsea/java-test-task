@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <item city="Барнаул" street="Дальняя улица" house="56" floor="2" />
+    <item city="Братск" street="Большая Октябрьская улица" house="65" floor="5" />
+    <item city="Балаково" street="Барыши, местечко" house="67" floor="2" />
+    <item city="Азов" street="Просека, улица" house="156" floor="3" />
+    <item city="Видное" street="Авиаторов, улица" house="185" floor="3" />
+    <item city="Братск" street="7-я Вишнёвая улица" house="49" floor="5" />
+    <item city="Батайск" street="Мостотреста, улица" house="133" floor="4" />
+    <item city="Великий Новгород" street="Филимонковская улица" house="44" floor="1" />
+    <item city="Абакан" street="2-я Валуевская улица" house="172" floor="3" />
+    <item city="Бугульма" street="Варшавское шоссе" house="92" floor="2" />
+    <item city="Ачинск" street="Варшавское шоссе" house="39" floor="4" />
+    <item city="Балашов" street="Учительский переулок" house="184" floor="1" />
+    <item city="Бийск" street="Сиреневая улица" house="14" floor="3" />
+    <item city="Армавир" street="Песчаная улица" house="69" floor="1" />
+    <item city="Ачинск" street="3-я Барышевская улица" house="154" floor="3" />
+</root>

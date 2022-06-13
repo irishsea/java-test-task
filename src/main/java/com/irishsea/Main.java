@@ -8,61 +8,65 @@ import com.irishsea.mergeSort.FileSplit;
 import javax.xml.stream.XMLStreamException;
 import java.io.*;
 import java.util.Iterator;
+import java.util.Scanner;
+
+import static java.lang.System.in;
 
 public class Main {
     public static void main(String[] args) throws XMLStreamException, IOException {
+        String exit = "exit";
 
-        /**
-         * проверка разбиения большого файла на маленькие по 400.000 строк в каждом
-         */
+        while (true) {
+            System.out.println("Введите путь до файла или \"exit\", чтобы выйти из программы.");
+            Scanner in = new Scanner(System.in);
+            String line = in.nextLine();
 
-//        File sourceFile = new File("sourceLargeFile.csv");
-//        File sourceFile = new File("address.csv");
-//        File sourceFile = new File("testSourceFile.csv");
-        File sourceFile = new File("address.xml");
-//        File sourceFile = new File("addressLite.xml");
+            if (line.equals(exit)) {
+                System.out.println("Вы завершили работу программы.");
+                break;
+            }
+            File sourceFile = new File(line);
 
-        /**
-         * Проверка
-         */
-        Iterator<String> iterator;
-        if (getFileExtension(sourceFile).equals("csv")) {
-            iterator = new CsvIterator(sourceFile);
-        } else {
-            iterator = new XmlIterator(sourceFile);
+            if (!sourceFile.exists()) {
+                System.out.println("Указан неверный путь, файл не существует.");
+                continue;
+            }
+
+            Iterator<String> iterator;
+            if (getFileExtension(sourceFile).equals("csv")) {
+                iterator = new CsvIterator(sourceFile);
+            } else if (getFileExtension(sourceFile).equals("xml")) {
+                iterator = new XmlIterator(sourceFile);
+            } else {
+                System.out.println("Некорректное расширение файла, используйте файлы с расширениями CSV или XML.");
+                continue;
+            }
+            try {
+                System.out.println("Старт анализа файла.");
+                long startSplit = System.currentTimeMillis();
+                int fileAmount = new FileSplit(iterator).splitLargeFileIntoSmallFiles(400000, "sorted files/0");
+                long endSplit = System.currentTimeMillis();
+                System.out.println("Время разделения на отсортированные файлы: " + (endSplit - startSplit));
+
+                long startMerge = System.currentTimeMillis();
+                File destFile = FileMerge.mergeAllFilesIntoOne(fileAmount);
+                long endMerge = System.currentTimeMillis();
+                System.out.println("Время слияния отсортированных файлов: " + (endMerge - startMerge));
+
+                long startAnalyze = System.currentTimeMillis();
+                FileAnalyzer fileAnalyzer = new FileAnalyzer(destFile);
+                fileAnalyzer.searchDuplicates();
+                fileAnalyzer.aggregateDataByCityAndFloor();
+                long endAnalyze = System.currentTimeMillis();
+                System.out.println("Время формирования статистики из отсортированного файла: " + (endAnalyze - startAnalyze));
+
+                FileMerge.deleteDirectory(new File("sorted files"));
+
+            } catch (IOException | XMLStreamException e) {
+                e.printStackTrace();
+            }
         }
-        try {
-            long startSplit = System.currentTimeMillis();
-            int fileAmount = new FileSplit(iterator).splitLargeFileIntoSmallFiles(400000);
-            long endSplit = System.currentTimeMillis();
-            System.out.println("Время разделения на отсортированные файлы: " + (endSplit - startSplit));
-
-            long startMerge = System.currentTimeMillis();
-            File destFile = FileMerge.mergeAllFilesIntoOne(fileAmount);
-            long endMerge = System.currentTimeMillis();
-            System.out.println("Время слияния отсортированных файлов: " + (endMerge - startMerge));
-
-            long startAnalyze = System.currentTimeMillis();
-            FileAnalyzer fileAnalyzer = new FileAnalyzer(destFile);
-            fileAnalyzer.searchDuplicates();
-            fileAnalyzer.aggregateDataByCityAndFloor();
-            long endAnalyze = System.currentTimeMillis();
-            System.out.println("Время формирования статистики: " + (endAnalyze - startAnalyze));
-
-            FileMerge.deleteDirectory(new File("sorted files"));
-
-        } catch (IOException | XMLStreamException e) {
-            e.printStackTrace();
-        }
-
-
-        /**
-         * Проверка, как парсится одна строка
-         */
-
-//        String lineForParse = new String("\"Батайск\";\"Мостотреста, улица\";133;4");
-//        LineWrapper lineWrapper = new LineWrapper(lineForParse);
-
+        in.close();
     }
 
     private static String getFileExtension(File file) {

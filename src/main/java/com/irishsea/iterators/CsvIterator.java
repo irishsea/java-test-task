@@ -2,7 +2,6 @@ package com.irishsea.iterators;
 
 import java.io.*;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 
 public class CsvIterator implements Iterator<String> {
@@ -13,7 +12,7 @@ public class CsvIterator implements Iterator<String> {
 
     public CsvIterator(final File file) throws IOException {
         this.reader = new BufferedReader(new FileReader(file));
-        /** пропускаем шапку таблицы CSV */
+        /* пропускаем шапку таблицы CSV */
         reader.readLine();
     }
 
@@ -28,14 +27,20 @@ public class CsvIterator implements Iterator<String> {
         }
 
         try {
-            String line = reader.readLine();
+            while (true) {
+                String line = reader.readLine();
 
-            if (line == null) {
-                finished = true;
-                return false;
+                if (line == null) {
+                    finished = true;
+                    return false;
+                }
+
+                if (line.equals("")) { //проверка на пустую строку
+                    continue;
+                }
+                cachedLine = line;
+                return true;
             }
-            cachedLine = line;
-            return true;
 
         } catch (IOException ioe) {
             try {

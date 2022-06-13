@@ -13,18 +13,6 @@ import java.nio.file.Files;
 
 class FileMergeTest {
 
-    @BeforeAll
-    static void beforeAll() throws IOException {
-    }
-
-    @BeforeEach
-    void setUp() {
-    }
-
-    @Test
-    void mergeAllFilesIntoOneTest() {
-    }
-
     @Test
     void mergeFiles() throws IOException {
         int caseNumber;
@@ -48,6 +36,5 @@ class FileMergeTest {
             writer.close();
         }
     }
-
 
 }

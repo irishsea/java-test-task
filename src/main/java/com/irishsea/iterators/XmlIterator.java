@@ -6,7 +6,6 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.events.XMLEvent;
 import java.io.*;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 public class XmlIterator implements Iterator<String> {
     private String cachedLine;
@@ -37,8 +36,8 @@ public class XmlIterator implements Iterator<String> {
                     String house = reader.getAttributeValue(null, "house");
                     int floor = Integer.parseInt(reader.getAttributeValue(null, "floor"));
 
-                    cachedLine = city + ";"
-                            + street + ";"
+                    cachedLine = "\"" + city + "\"" + ";"
+                            + "\"" + street  + "\"" + ";"
                             + house + ";"
                             + floor;
 
