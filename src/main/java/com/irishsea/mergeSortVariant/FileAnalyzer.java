@@ -1,6 +1,6 @@
-package com.irishsea;
+package com.irishsea.mergeSortVariant;
 
-import com.irishsea.iterators.CommonIterator;
+import com.irishsea.mergeSortVariant.iterators.CommonIterator;
 
 import java.io.*;
 

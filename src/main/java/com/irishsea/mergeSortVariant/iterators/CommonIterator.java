@@ -1,10 +1,9 @@
-package com.irishsea.iterators;
+package com.irishsea.mergeSortVariant.iterators;
 
-import com.irishsea.LineWrapper;
+import com.irishsea.mergeSortVariant.LineWrapper;
 
 import java.io.*;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 public class CommonIterator implements Iterator<LineWrapper> {
     private LineWrapper cachedItem;

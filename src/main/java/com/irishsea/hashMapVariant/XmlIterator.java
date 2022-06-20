@@ -1,16 +1,19 @@
-package com.irishsea.iterators;
+package com.irishsea.hashMapVariant;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.events.XMLEvent;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.Iterator;
 
-public class XmlIterator implements Iterator<String> {
-    private String cachedLine;
+public class XmlIterator implements Iterator<LineWrapper> {
+    private LineWrapper cachedLW;
     private final XMLStreamReader reader;
 
+    /*закрывать reader, когда класс отработает*/
     public XmlIterator(final File file) throws FileNotFoundException, XMLStreamException {
         final XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
         this.reader = xmlInputFactory.createXMLStreamReader(
@@ -19,7 +22,7 @@ public class XmlIterator implements Iterator<String> {
 
     @Override
     public boolean hasNext() {
-        if (cachedLine != null) {
+        if (cachedLW != null) {
             return true;
         }
 
@@ -31,19 +34,15 @@ public class XmlIterator implements Iterator<String> {
                         && (reader.getName().getLocalPart().equals("item"));
 
                 if (isValidEvent) {
-                    String city = reader.getAttributeValue(null, "city");
-                    String street = reader.getAttributeValue(null, "street");
-                    String house = reader.getAttributeValue(null, "house");
-                    int floor = Integer.parseInt(reader.getAttributeValue(null, "floor"));
-
-                    cachedLine = "\"" + city + "\"" + ";"
-                            + "\"" + street  + "\"" + ";"
-                            + house + ";"
-                            + floor;
-
+                     cachedLW = new LineWrapper
+                            (reader.getAttributeValue(null, "city"),
+                             reader.getAttributeValue(null, "street"),
+                             reader.getAttributeValue(null, "house"),
+                             Integer.parseInt(reader.getAttributeValue(null, "floor")));
                     return true;
                 }
             }
+            reader.close();
         } catch (XMLStreamException e) {
             e.printStackTrace();
         }
@@ -51,13 +50,13 @@ public class XmlIterator implements Iterator<String> {
     }
 
     @Override
-    public String next() {
+    public LineWrapper next() {
         if (!hasNext()) {
             return null;
         }
 
-        String currentLine = cachedLine;
-        cachedLine = null;
-        return currentLine;
+        LineWrapper currentLW = cachedLW;
+        cachedLW = null;
+        return currentLW;
     }
 }

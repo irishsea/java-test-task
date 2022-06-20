@@ -1,14 +1,13 @@
-package com.irishsea;
+package com.irishsea.hashMapVariant;
 
-import com.irishsea.iterators.CsvIterator;
-import com.irishsea.iterators.XmlIterator;
-import com.irishsea.mergeSort.FileMerge;
-import com.irishsea.mergeSort.FileSplit;
+import com.irishsea.hashMapVariant.CsvIterator;
+import com.irishsea.hashMapVariant.XmlIterator;
+
 
 import javax.xml.stream.XMLStreamException;
-import java.io.*;
-import java.util.Iterator;
-import java.util.Scanner;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
 import static java.lang.System.in;
 
@@ -32,7 +31,7 @@ public class Main {
                 continue;
             }
 
-            Iterator<String> iterator;
+            Iterator<LineWrapper> iterator;
             if (getFileExtension(sourceFile).equals("csv")) {
                 iterator = new CsvIterator(sourceFile);
             } else if (getFileExtension(sourceFile).equals("xml")) {
@@ -41,30 +40,10 @@ public class Main {
                 System.out.println("Некорректное расширение файла, используйте файлы с расширениями CSV или XML.");
                 continue;
             }
-            try {
-                System.out.println("Старт анализа файла.");
-                long startSplit = System.currentTimeMillis();
-                int fileAmount = new FileSplit(iterator).splitLargeFileIntoSmallFiles(400000, "sorted files/0");
-                long endSplit = System.currentTimeMillis();
-                System.out.println("Время разделения на отсортированные файлы: " + (endSplit - startSplit));
-
-                long startMerge = System.currentTimeMillis();
-                File destFile = FileMerge.mergeAllFilesIntoOne(fileAmount);
-                long endMerge = System.currentTimeMillis();
-                System.out.println("Время слияния отсортированных файлов: " + (endMerge - startMerge));
-
-                long startAnalyze = System.currentTimeMillis();
-                FileAnalyzer fileAnalyzer = new FileAnalyzer(destFile);
-                fileAnalyzer.searchDuplicates();
-                fileAnalyzer.aggregateDataByCityAndFloor();
-                long endAnalyze = System.currentTimeMillis();
-                System.out.println("Время формирования статистики из отсортированного файла: " + (endAnalyze - startAnalyze));
-
-                FileMerge.deleteDirectory(new File("sorted files"));
-
-            } catch (IOException | XMLStreamException e) {
-                e.printStackTrace();
-            }
+            System.out.println("Старт анализа файла.");
+            System.out.println("Поиск дубликатов.");
+            FileAnalyzer fileAnalyzer = new FileAnalyzer(sourceFile, iterator);
+            fileAnalyzer.searchDuplicates();
         }
         in.close();
     }

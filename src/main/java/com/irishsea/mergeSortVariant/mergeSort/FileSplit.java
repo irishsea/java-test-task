@@ -1,10 +1,9 @@
-package com.irishsea.mergeSort;
+package com.irishsea.mergeSortVariant.mergeSort;
 
-import com.irishsea.LineWrapper;
+import com.irishsea.mergeSortVariant.LineWrapper;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.*;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -28,7 +27,7 @@ public class FileSplit {
         ArrayList<LineWrapper> linesList = new ArrayList<>();
         String line;
 
-        while (iterator.hasNext()) {  //что если в файле встретится просто пустая строка?
+        while (iterator.hasNext()) {
             line = iterator.next();
 
             /*

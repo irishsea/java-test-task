@@ -1,4 +1,4 @@
-package com.irishsea.iterators;
+package com.irishsea.mergeSortVariant.iterators;
 
 import java.io.*;
 import java.util.Iterator;

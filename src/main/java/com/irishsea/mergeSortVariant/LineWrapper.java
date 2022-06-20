@@ -1,7 +1,7 @@
 /**
  * Класс - обертка над строкой, дает доступ к частям строки
  */
-package com.irishsea;
+package com.irishsea.mergeSortVariant;
 
 
 public class LineWrapper implements Comparable<LineWrapper> {
@@ -25,7 +25,7 @@ public class LineWrapper implements Comparable<LineWrapper> {
 
     @Override
     public int compareTo(LineWrapper o) {
-        /**
+        /*
          * сравнение двух строк по всем атрибутам (город, этажи, улица, номер дома)
          */
 

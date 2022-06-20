@@ -1,5 +1,6 @@
 package com.irishsea;
 
+import com.irishsea.mergeSortVariant.FileAnalyzer;
 import org.junit.jupiter.api.*;
 
 import java.io.*;

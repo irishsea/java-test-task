@@ -1,9 +1,7 @@
-package com.irishsea.mergeSort;
+package com.irishsea.mergeSortVariant.mergeSort;
 
-import com.irishsea.LineWrapper;
-import com.irishsea.iterators.CommonIterator;
-import com.irishsea.iterators.CsvIterator;
-import com.irishsea.iterators.XmlIterator;
+import com.irishsea.mergeSortVariant.iterators.CsvIterator;
+import com.irishsea.mergeSortVariant.iterators.XmlIterator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

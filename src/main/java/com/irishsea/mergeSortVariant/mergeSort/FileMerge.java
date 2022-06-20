@@ -1,7 +1,7 @@
-package com.irishsea.mergeSort;
+package com.irishsea.mergeSortVariant.mergeSort;
 
-import com.irishsea.LineWrapper;
-import com.irishsea.iterators.CommonIterator;
+import com.irishsea.mergeSortVariant.LineWrapper;
+import com.irishsea.mergeSortVariant.iterators.CommonIterator;
 
 import java.io.*;
 import java.nio.file.Files;
